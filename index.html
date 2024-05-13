@@ -132,7 +132,7 @@
 				}
 				update(obj) {
 					const { rb } = this;
-					const delay = Math.min(50, this.exhaustion / 300);
+					const delay = Math.min(50, this.exhaustion / 100);
 
 					if (this.sleeping) {
 						if (keyboard.justPressed(" ")) {
@@ -152,6 +152,8 @@
 						obj.transform.rotation = -Math.PI / 2;
 						this.sleeping = true;
 						this.inputs = [];
+						for (const key in this.held)
+							this.held[key] = false;
 					}
 
 					if (keyboard.justPressed("ArrowLeft")) this.inputs.push(new Input(Move.LEFT, true, delay));
@@ -280,7 +282,7 @@
 
 					float vignette = pow(length(position - resolution * 0.5) / length(resolution * 0.5), 2.0);
 
-					color.rgb *= 1.0 - vignette * min(2.0, exhaustion / 3000.0);
+					color.rgb *= 1.0 - vignette * exhaustion / 3000.0;
 
 					return color;
 				}
