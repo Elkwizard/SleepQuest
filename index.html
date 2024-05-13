@@ -1,0 +1,357 @@
+<script src="https://elkwizard.github.io/Hengine/Hengine.js" title="Sleep Quest">
+	const IMAGES = {
+		left: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAAAXNSR0IArs4c6QAAALNJREFUOE9jZGBgYDg+M/0/iKYGYAQZdvXgVbhZ2vbaDDA+jI1OI1uMLgc3ENkgdJeSIsc4J8qGoHexuRpX8DDm2mv915cWokbwgc0g2cCLT98x4HMAo5ub2/8wkW9g05EVY9O46g0Xg/rPJ1gNhKkHGwhTBBLEBkAuAsndZJeBG4hsIbJFcANhiu+//Qw285eUJgPbs+tgGmQhSBzGBsmD1IPkFYV54RaBwxBEgFxJrVgBABawec5H6CKHAAAAAElFTkSuQmCC",
+		platform: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAAAXNSR0IArs4c6QAAAKZJREFUOE9jPD4z/T8DFQEjyMCrB6/CjdS212aA8WFsdBrZfnQ5uIHIBqE7mBQ5xjlRNgS9jM3VuEKJKANJCWKSDbz49B2DvrQQTjtQDERWjE3jqjdcDOo/n2A1EKYebCCMA6KxAZCLQHI32WXgBiJbCLMIpJcx117r//23nxl+SWmCFYPYIADisz27jiIOUwOSBxkOklcU5oWzwQa6ubkRjGVSIgUAKiN6MSpAD+cAAAAASUVORK5CYII=",
+		right: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAAAXNSR0IArs4c6QAAALdJREFUOE9jPD4z/T8DlYBl+kxGxjlRNv+17bUZrh68ygCjkc1Hl0NWg64exAcbCDMAm4GkyGEYiO5zfK7BFUooLqQ0KC8+fYfqZXQDQQr0pYWItgduIC6NIPGb7DIMYSLfUAxFVo/MXvWGC+JCdI0wRTBx9Z9PwC4F8bEBmBzIcsZcey1wLIM4II33335m+CWlCWbDxNmeXWdQFOYFqwGxQfIgGgRg4iD1YAPd3NyolrB37drFCAA7PH3lsBjf+AAAAABJRU5ErkJggg==",
+		support: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAAAXNSR0IArs4c6QAAAEBJREFUGFdj1JMS+i/Mw84AA4zCsgyMCkI8//k42BhgEhiCIAEQAKtUFOFF1Y5uJm6VBLXDLQKZCTIH5CS8tgMAMl4QukuiDAAAAAAASUVORK5CYII=",
+		bed: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAeCAYAAAC7Q5mxAAAAAXNSR0IArs4c6QAAA0RJREFUaEPt2sGLElEYAPBvsV0U1kEPhbiQZGBC0tEuUYfAQ0oQWcEeOlin+gfaS3QIIogIz0tQhyKwS3jtEtEhKKFDkC6GUIJ70EVxFUuM7y1ves68Gd8bx92Z1XdxeL735s3P731vHF2CRZlKYInXe3P93Ajrb7/6yH1/qjMess46IIrHXucC0vhTHwNkIw+PEW4RjeZLZgE4ZUoxBTz/4Lnh8LFYbJEfAUBFYHMfzXnFYnGUTqd1iJVKRVc3r6BjgDTn4asRHi8kEbRcLkMmk5m7qLQFEFHz+TyxTXz6YppVLr55KYT86PJVcivFlo13b0378vpMmeJId7PzTg1Yr9eh0WiQE7UeP5OeLwXdSF1SwRSvT3qc/ejAg+QChtbvAS/3GU2yVCpZwsPxXvzcgrVAgAztVDizVWAKWK1WwePxkP6RSITrh3hWo0+L1+73XIfIBeyevQbZbBbC4TDBqdVqY3gUky5fK0sX8bBg9Lkh8oyi0BAwHo9DKpXSRR1iDodDiEajgICFQmHixqEdhMXr9Pvg93pdhcjmQh3gkyvJUfzWfcClmUwmIZFIqNdPIxIrEA+LLCCLp4V1SyROBGz3B5C8+5Ag0pLL5dRjrG82m3u5r9USjkAtnlvAeMmfInIj8PfOLvi9R6DT/0v6dgd/4PT1O9But0FRFFIXDAZh6/VTcnxBOcPdYMyWLuK5ZdOQAsSvdDu9gdoHo5FCYiXCsuV4cBVODKOWAIU6ObQRNwK1c2Uhja4j4FuRAtwdDCCkKLAWCDqURmxawoAIhJD4ioUes3UyEUhvmnEst+ZAw02EF4EUjr7HwtE6WUCnw2FuXvbUwbd8UheOR1cbYz91cB9niQXx/1aHAXC784NsliFl73u44l1RV53Wg/2JY18BcSKfe13AyR7zn5L9nGbSnsLh4BQPN0aj8u1XE/IfvqtutgDiyUSjsLj9VTc3UUy74HEctuCdBUYcFm3KYtshHhYhQNpY28EsDN7fuKl7hse2l30WaOfzv0lj8a5L+wvlzAFxEkaIonhW1qnZg1QrcHQOBwKoRZwlnBVsmT4HBigzSSe3tQ1QJg86GUR2bkaArAfZhXl/58D6ef5Lh6jJP09zBj1z808SAAAAAElFTkSuQmCC"
+	};
+	
+	new HengineLoadingStructure()
+		.image(IMAGES.left)
+		.image(IMAGES.right)
+		.image(IMAGES.platform)
+		.image(IMAGES.support)
+		.image(IMAGES.bed)
+		.load()
+		.then(() => {
+			const LEFT_IMAGE = loadResource(IMAGES.left);
+			const RIGHT_IMAGE = loadResource(IMAGES.right);
+			const PLATFORM_IMAGE = loadResource(IMAGES.platform);
+			const SUPPORT_IMAGE = loadResource(IMAGES.support);
+			const BED_IMAGE = loadResource(IMAGES.bed);
+
+			class BED extends ElementScript {
+				init(obj) {
+					obj.scripts.removeDefault();
+					obj.layer--;
+					obj.scripts.PHYSICS.isTrigger = true;
+				}
+				update(obj) {
+					
+				}
+				draw(obj, name, shape) {
+					renderer.image(BED_IMAGE).rect(shape);
+				}
+				static create(x, y) {
+					const bed = scene.main.addPhysicsRectElement("bed", x, y - 55, 200, 90);
+					bed.scripts.add(BED);
+					return bed;
+				}
+			}
+
+			class PLATFORM extends ElementScript {
+				init(obj) {
+					obj.scripts.removeDefault();
+					const { width, height } = obj.defaultShape;
+					this.image = new Frame(width, height);
+					this.image.renderer.image(LEFT_IMAGE).inferWidth(0, 0, height);
+					const imageWidth = PLATFORM_IMAGE.inferWidth(height);
+					for (let i = imageWidth; i < width - imageWidth; i += imageWidth) {
+						this.image.renderer.image(PLATFORM_IMAGE).inferWidth(i, 0, height);
+					}
+					this.image.renderer.image(RIGHT_IMAGE).inferWidth(width - imageWidth, 0, height);
+
+					this.supportImage = new Frame(20, window.height * 2);
+					for (let i = 0; i < this.supportImage.height; i += SUPPORT_IMAGE.inferHeight(20)) {
+						this.supportImage.renderer.image(SUPPORT_IMAGE).inferHeight(0, i, 20);
+					}
+
+					obj.graphicalBoundingBox = obj.getBoundingBox();
+					obj.graphicalBoundingBox.height += this.supportImage.height;
+
+					obj.layer--;
+
+					if (Random.bool(0.1) && obj.width > 200) {
+						BED.create(obj.transform.position.x, obj.transform.position.y);
+					}
+				}
+				draw(obj, name, shape) {
+					const { xRange } = shape;
+					if (obj.width < 200)
+						renderer.image(this.supportImage).default(xRange.fromIntervalValue(0.5) - this.supportImage.width / 2, 0);
+					else {
+						renderer.image(this.supportImage).default(xRange.fromIntervalValue(0.2) - this.supportImage.width / 2, 0);
+						renderer.image(this.supportImage).default(xRange.fromIntervalValue(0.8) - this.supportImage.width / 2, 0);
+					}
+					renderer.image(this.image).rect(shape);
+				}
+				static create(x, y, width, height) {
+					const platform = scene.main.addPhysicsRectElement("platform", x, y, width, height, false);
+					platform.scripts.add(PLATFORM);
+					return platform;
+				}
+			}
+
+			// PLATFORM.create(width / 2, height, width, 100);
+			// PLATFORM.create(width / 2, 0, width, 100);
+			// PLATFORM.create(0, height / 2, 100, height);
+			// PLATFORM.create(width, height / 2, 100, height);
+
+			const Move = Enum.define("LEFT", "RIGHT", "JUMP");
+			class Input {
+				constructor(move, state, delay) {
+					this.move = move;
+					this.state = state;
+					this.delay = delay;
+				}
+			}
+
+			scene.physicsEngine.gravity.y = 0.3;
+
+			class PLAYER extends ElementScript {
+				init(obj) {
+					obj.scripts.removeDefault();
+					this.rb = obj.scripts.PHYSICS;
+					this.held = {
+						LEFT: false,
+						RIGHT: false,
+						JUMP: false
+					};
+					this.inputs = [];
+					this.time = 0;
+					this.xVelocity = new Animatable(0, 5, Interpolation.smooth);
+					this.rb.canRotate = false;
+					this.rb.friction = 0;
+					this.sleeping = false;
+				}
+				get exhaustion() {
+					return 0.2 * Math.max(0, 200 * (this.time - fph * 16) / fph) ** 1.01;
+				}
+				stop() {
+					this.rb.stop();
+					this.xVelocity.value = 0;
+				}
+				beforeUpdate(obj) {
+					if (obj.transform.position.y > height + 1000) {
+						this.stop();
+						obj.transform.position.set(width / 2, -100);
+					}
+
+					scene.camera.moveTowards(obj.transform.position);
+				}
+				update(obj) {
+					const { rb } = this;
+					const delay = Math.min(50, this.exhaustion / 300);
+
+					if (this.sleeping) {
+						if (keyboard.justPressed(" ")) {
+							rb.mobile = true;
+							obj.transform.rotation = 0;
+							this.sleeping = false;
+						}
+
+						if (this.time >= 0) this.time -= 5;
+
+						return;
+					}
+					
+					if (rb.colliding.test(data => data.element.scripts.has(BED)) && keyboard.justPressed(" ")) {
+						this.stop();
+						rb.mobile = false;
+						obj.transform.rotation = -Math.PI / 2;
+						this.sleeping = true;
+						this.inputs = [];
+					}
+
+					if (keyboard.justPressed("ArrowLeft")) this.inputs.push(new Input(Move.LEFT, true, delay));
+					if (keyboard.justReleased("ArrowLeft")) this.inputs.push(new Input(Move.LEFT, false, delay));
+
+					if (keyboard.justPressed("ArrowRight")) this.inputs.push(new Input(Move.RIGHT, true, delay));
+					if (keyboard.justReleased("ArrowRight")) this.inputs.push(new Input(Move.RIGHT, false, delay));
+
+					if (keyboard.justPressed("ArrowUp")) this.inputs.push(new Input(Move.JUMP, true, delay));
+					if (keyboard.justReleased("ArrowUp")) this.inputs.push(new Input(Move.JUMP, false, delay));
+
+					for (let i = 0; i < this.inputs.length; i++) {
+						const input = this.inputs[i];
+						if (input.delay <= 0) {
+							this.held[input.move] = input.state;
+							if (input.state) switch (input.move) {
+								case Move.JUMP: {
+									if (rb.colliding.bottom) rb.velocity.y = -13;
+								}; break;
+							}
+							this.inputs.splice(i, 1);
+							i--;
+						} else input.delay--;
+					}
+
+					const direction = this.held.RIGHT - this.held.LEFT;
+					this.xVelocity.target = direction * 5;
+					rb.velocity.x = this.xVelocity.value;
+
+					if (rb.velocity.y < 0 && !this.held.JUMP)
+						rb.velocity.y += 0.2;
+
+					if (!rb.colliding.bottom && rb.velocity.y > 0)
+						rb.velocity.y += 0.4;
+
+					this.time++;
+				}
+				draw(obj, name, shape) {
+					renderer.draw(Color.CYAN).infer(shape);
+					renderer.textMode = TextMode.CENTER_CENTER;
+					renderer.draw(Color.BLACK).text(Font.Arial20, ~~this.exhaustion + "\n" + this.time, 0, 0);
+				}
+				static create(x, y) {
+					const player = scene.main.addPhysicsRectElement("player", x, y, 40, 60, true);
+					player.scripts.add(PLAYER);
+					return player;
+				}
+			}
+
+			const player = PLAYER.create(0, Infinity);
+
+			const postProcess = new GPUShader(width, height, `
+				uniform sampler2D canvas;
+				uniform float exhaustion;
+
+				float random11(float seed) {
+					float a = mod(seed * 6.12849, 8.7890975);
+					float b = mod(a * 256745.4758903, 232.567890);
+					return mod(abs(a * b), 1.0);
+				}
+
+				vec2 random22(vec2 seed) {
+					return vec2(random11(seed.x + seed.y * 23.23857), random11(seed.x * 10.8237 + seed.y));
+				}
+
+				float random21(vec2 seed) {
+					return random11(seed.x + 3.238975 * seed.y + 5.237 * seed.x);
+				}
+
+				vec2 smoothT(vec2 t) {
+					return t * t * (-2.0 * t + 3.0);
+				}
+
+				float perlin(vec2 seed) {
+					vec2 samplePoint = floor(seed);
+					float a = random21(samplePoint);
+					float b = random21(samplePoint + vec2(1.0, 0.0));
+					float c = random21(samplePoint + vec2(0.0, 1.0));
+					float d = random21(samplePoint + vec2(1.0));
+					vec2 t = smoothT(mod(seed, 1.0));
+					return mix(mix(a, b, t.x), mix(c, d, t.x), t.y);
+				}
+
+				float octavePerlin(vec2 seed) {
+					seed += 10.0;
+					float sum = 0.0;
+					float scale = 0.0;
+					for (float o = 0.0; o < 5.0; o++) {
+						float i = o + 1.0;
+						sum += perlin(seed * i) / i;
+						scale += 1.0 / i;
+					}
+					return sum / scale;
+				}
+
+				float sigmoid(float x) {
+					return 1.0 / (1.0 + exp(-10.0 * (x - 0.5)));
+				}
+
+				vec2 warp(vec2 pos) {
+					float noise = octavePerlin((position + exhaustion) * 0.02);
+					float magNoise = octavePerlin((position + 1000.0) * 0.02);
+					float angle = sigmoid(noise) * 6.28;
+					return vec2(cos(angle), sin(angle)) * magNoise * 0.2 * exhaustion / 40000.0;
+				}
+
+				vec4 shader() {
+					vec2 px = 1.0 / resolution;
+					vec2 uv = position * px;
+
+					uv += warp(position);
+
+					vec4 total = vec4(0.0);
+					float totalWeight = 0.0;
+					float radius = min(20.0, exhaustion / 1000.0);
+					float step = clamp(radius, 1.0, 3.0);
+					for (float i = -radius; i <= radius; i += step)
+					for (float j = -radius; j <= radius; j += step) {
+						vec2 offset = vec2(i, j);
+						float weight = 1.0 / (1.0 + dot(offset, offset));
+						vec4 color = texture(canvas, uv + offset * px);
+						totalWeight += weight;
+						total += color * weight;
+					}
+					vec4 color = total / totalWeight;
+
+					float vignette = pow(length(position - resolution * 0.5) / length(resolution * 0.5), 2.0);
+
+					color.rgb *= 1.0 - vignette * min(2.0, exhaustion / 3000.0);
+
+					return color;
+				}
+			`);
+
+			let furthest = 0;
+			let fph = 100;
+			let time = fph * 8;
+
+			const skyColor = new Gradient([
+				{ start: 0, value: new Color(0x01090a) },
+				{ start: 4, value: new Color(0x123456) },
+				{ start: 7, value: new Color(0xf7e081) },
+				{ start: 8, value: new Color(0xcf9bf2) },
+				{ start: 8.5, value: new Color(0x3c85fa) },
+				{ start: 9, value: Color.SKY_BLUE },
+				{ start: 16, value: Color.SKY_BLUE },
+				{ start: 18, value: new Color(0xf7e081) },
+				{ start: 19, value: new Color(0xcf9bf2) },
+				{ start: 22, value: new Color(0x01090a) }
+			]);
+
+			canvas.clearScreen = () => {
+				const { exhaustion } = player.scripts.PLAYER;
+				const color = skyColor.sample((time / fph) % 24);
+				const alpha = Math.max(0, 1 - exhaustion / 1500);
+				renderer.fill(Color.alpha(color, alpha));
+			};
+
+			intervals.continuous(() => {
+				postProcess.setArguments({ canvas, exhaustion: player.scripts.PLAYER.exhaustion });
+				renderer.clear();
+				renderer.image(postProcess).default(0, 0);
+
+				time++;
+
+				renderer.save();
+				const clockRadius = 50;
+				const padding = 20;
+				renderer.translate(padding + clockRadius, padding + clockRadius);
+				renderer.draw(Color.WHITE).circle(0, 0, clockRadius);
+				renderer.draw(Color.BLACK, 4).circle(0, 0, 5);
+				renderer.stroke(Color.BLACK, 4).circle(0, 0, clockRadius);
+				const hour = time / fph % 12;
+				const minute = 60 * (hour % 1);
+				renderer.save();
+				renderer.rotate(hour / 12 * Math.PI * 2 - Math.PI / 2);
+				renderer.stroke(Color.BLACK).arrow(0, 0, clockRadius * 0.5, 0);
+				renderer.restore();
+				renderer.save();
+				renderer.rotate(minute / 60 * Math.PI * 2 - Math.PI / 2);
+				renderer.stroke(Color.BLACK).arrow(0, 0, clockRadius * 0.8, 0);
+				renderer.restore();
+
+				for (let i = 1; i <= 12; i++) {
+					const vec = Vector2.fromAngle(i / 12 * Math.PI * 2 - Math.PI / 2).times(clockRadius - 10);
+					renderer.draw(Color.GRAY).text(Font.Arial10, i, vec.x, vec.y);
+				}
+
+				renderer.restore();
+
+				if (scene.camera.screen.max.x > furthest) {
+					const w = Random.range(100, 300);
+					const space = 100;
+					furthest += w + space;
+					const y = Random.range(200, height - 200);
+					const offset = Random.range(0, space);
+					PLATFORM.create(furthest - w / 2 + (space - offset), y - Random.range(300, 400), w, 30);
+					PLATFORM.create(furthest - w / 2 - offset, y, w, 30);
+					PLATFORM.create(furthest - w / 2 + offset, y + Random.range(300, 400), w, 30);
+				}
+			}, IntervalFunction.AFTER_UPDATE);
+		});
+</script>
